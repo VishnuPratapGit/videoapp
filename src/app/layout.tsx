@@ -1,5 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { JetBrains_Mono } from "next/font/google";
+import { cn } from "@/src/lib/utils";
+import { Providers } from "./providers";
+import { Header } from "../components/navbar/Header";
+import { AppSidebar } from "../components/sidebar";
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,8 +22,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+      <body className="min-h-full">
+        <Providers>
+          <div className="flex flex-col min-h-screen w-full">
+            <Header />
+            <div className="flex flex-1">
+              <AppSidebar />
+              <main className="flex-1 border p-10">{children}</main>
+            </div>
+          </div>
+        </Providers>
+      </body>
     </html>
   );
 }
