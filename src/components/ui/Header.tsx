@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from "react";
-import Button from "../Button";
-import Input from "../Input";
-import Logo from "../Logo";
+import Button from "./Button";
+import Input from "./Input";
+import Logo from "./Logo";
 import { Menu, Search, X } from "lucide-react";
-import { useSidebar } from "../ui/sidebar";
+import { useSidebar } from "@/src/context/SidebarContext";
 
 type HeaderProps = {
   sidebarOpen?: boolean;
@@ -16,7 +16,7 @@ export function Header({
     sidebarOpen, 
     setSidebarOpen = ()=>{} 
 } : HeaderProps ) {
-    const { state, toggleSidebar } = useSidebar();
+    const {state, toggleSidebar} = useSidebar();
     const [inputActive, setInputActive] = useState(false);
 
     return (

@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { JetBrains_Mono } from "next/font/google";
-import { cn } from "@/src/lib/utils";
-import { Providers } from "./providers";
-import { Header } from "../components/navbar/Header";
-import { AppSidebar } from "../components/sidebar";
+import { Providers } from "../providers/RootProviders";
+import { Header } from "../components/ui/Header";
+import { AppSidebar } from "../components/ui/Sidebar";
 
-const jetbrainsMono = JetBrains_Mono({
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
 });
 
 export const metadata: Metadata = {
@@ -22,14 +21,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
+    <html lang="en" className={jetBrainsMono.variable}>
       <body className="min-h-full">
         <Providers>
           <div className="flex flex-col min-h-screen w-full">
             <Header />
             <div className="flex flex-1">
               <AppSidebar />
-              <main className="flex-1 border p-10">{children}</main>
+              <main className="flex-1 p-10">{children}</main>
             </div>
           </div>
         </Providers>
