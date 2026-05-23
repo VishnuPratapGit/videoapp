@@ -1,5 +1,5 @@
 'use client';
-
+import { useSession, signOut } from "next-auth/react"
 import { useState } from "react";
 import Button from "./Button";
 import Input from "./Input";
@@ -16,6 +16,8 @@ export function Header({
     sidebarOpen, 
     setSidebarOpen = ()=>{} 
 } : HeaderProps ) {
+    const { data: session, status } = useSession();
+
     const {state, toggleSidebar} = useSidebar();
     const [inputActive, setInputActive] = useState(false);
 
@@ -50,15 +52,15 @@ export function Header({
             placeholder="Search"
           />
         </div>
-        <div>
-          <Button
-            className={
-              "border-2 font-bold bg-slate-200 font-mono text-black hover:text-blue-500 rounded-md hover:border-blue-500"
-            }
-          >
-            Login
-          </Button>
-        </div>
+        {status === 'authenticated' ? (
+          <div>
+            <Button onClick={() => signOut()}>Logout</Button>
+          </div>
+        ):(
+          <div>
+            <Button>Signin</Button>
+          </div>
+        )}
       </div>
     );
 }

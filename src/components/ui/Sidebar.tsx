@@ -15,7 +15,7 @@ export function AppSidebar() {
     { icon: 'Library', label: "Library", href: "/library" },
     { icon: 'Heart', label: "Liked", href: "/liked" },
     { icon: 'History', label: "History", href: "/history" },
-  ];
+  ] as const;
 
   const isActive = (href: string) => pathname === href;
 

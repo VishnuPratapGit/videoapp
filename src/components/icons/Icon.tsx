@@ -1,13 +1,12 @@
-import *  as Icons from "lucide-react";
-import { LucideIcon } from "lucide-react";
+import { Home, Flame, Library, Heart, History, LucideIcon } from "lucide-react";
 
-const iconMap: Record<string, LucideIcon> = {
-    Home: Icons.Home,
-    Flame: Icons.Flame,
-    Library: Icons.Library,
-    Heart: Icons.Heart,
-    History: Icons.History,
-};
+const iconMap = {
+  Home,
+  Flame,
+  Library,
+  Heart,
+  History,
+} satisfies Record<string, LucideIcon>;
 
 interface IconProps {
     icon: keyof typeof iconMap;
