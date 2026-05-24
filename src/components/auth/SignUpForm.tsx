@@ -5,9 +5,10 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
+import { createNewUser } from "@/src/features/users/user.actions";
 import Link from "next/link";
 
-export const SignInForm = () => {
+export const SignUpForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
@@ -21,11 +22,27 @@ export const SignInForm = () => {
 
     try {
       const formData = new FormData(e.currentTarget);
+      const username = formData.get("username");
       const email = formData.get("email");
       const password = formData.get("password");
 
-      if (typeof email !== "string" || typeof password !== "string") {
-        setError("Please enter your email and password.");
+      if (
+        typeof username !== "string" ||
+        typeof email !== "string" ||
+        typeof password !== "string"
+      ) {
+        setError("Please fill all fields correctly.");
+        return;
+      }
+
+      const userCreated = await createNewUser({
+        username,
+        email,
+        password,
+      });
+
+      if (!userCreated.success) {
+        setError(userCreated.error || "Could not create account.");
         return;
       }
 
@@ -36,7 +53,7 @@ export const SignInForm = () => {
       });
 
       if (result?.error || !result?.ok) {
-        setError("Invalid email or password.");
+        setError("Account created, but auto sign-in failed.");
         return;
       }
 
@@ -57,11 +74,18 @@ export const SignInForm = () => {
     >
       <div className="flex flex-col items-center mb-10 gap-2">
         <p className="text-lg font-mono">
-          Welcome! Please sign in to your account.
+          Welcome! Please create an account.
         </p>
       </div>
 
       <div className="flex flex-col gap-4 w-full">
+        <Input
+          name="username"
+          placeholder="Username"
+          type="text"
+          autoComplete="username"
+          required
+        />
         <Input
           name="email"
           placeholder="Email"
@@ -78,12 +102,12 @@ export const SignInForm = () => {
         />
         {error ? <p className="text-sm text-red-500">{error}</p> : null}
         <Button className="font-mono mt-4" disabled={isLoading} type="submit">
-          {isLoading ? "Signing in..." : "Sign In"}
+          {isLoading ? "Creating account..." : "Sign Up"}
         </Button>
       </div>
 
       <p className="text-lg font-mono mt-10">
-        Don&apos;t have an account? <Link href={"/auth/signup"}>Sign up</Link>
+        Already have an account? <Link href={"/auth/signin"}>Sign in</Link>
       </p>
     </form>
   );

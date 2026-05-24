@@ -1,39 +1,27 @@
+import { signInUser } from "@/src/features/users/user.actions";
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "username" },
+        email: {label: "Email", type: "email", placeholder: "Email" },
         password: { label: "Password", type: "password", placeholder: "password" },
       },
       authorize: async (credentials) => {
-        console.log("Credentials received:", credentials);
+        if (!credentials?.email || !credentials.password) {
+          return null;
+        }
 
-        return {
-          id: "1",
-          name: "Regular User",
-          email: "regular.user@example.com"
-        };
-
-        // const res = await fetch("/your/endpoint", {
-        //   method: 'POST',
-        //   body: JSON.stringify(credentials),
-        //   headers: { "Content-Type": "application/json" }
-        // })
-        // const user = await res.json()
-
-        // // If no error and we have user data, return it
-        // if (res.ok && user) {
-        //   return user
-        // }
-        // // Return null if user data could not be retrieved
-        // return null
-      }
-    })
+        return await signInUser({
+          email: credentials.email,
+          password: credentials.password,
+        });
+      },
+    }),
   ],
 
   pages: {

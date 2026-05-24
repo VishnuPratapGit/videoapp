@@ -17,3 +17,13 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+a {
+  color: rgb(18, 140, 255);
+  text-underline-offset: 4px;
+  
+}
+
+a:hover {
+  text-decoration: underline;
+}

@@ -6,6 +6,7 @@ import Input from "./Input";
 import Logo from "./Logo";
 import { Menu, Search, X } from "lucide-react";
 import { useSidebar } from "@/src/context/SidebarContext";
+import { useRouter } from "next/navigation"
 
 type HeaderProps = {
   sidebarOpen?: boolean;
@@ -17,17 +18,20 @@ export function Header({
     setSidebarOpen = ()=>{} 
 } : HeaderProps ) {
     const { data: session, status } = useSession();
-
+    const router = useRouter();
     const {state, toggleSidebar} = useSidebar();
     const [inputActive, setInputActive] = useState(false);
 
     return (
       <div className="flex items-center justify-between border-b border-neutral-800 py-2 px-5">
         <div className="flex items-center gap-4">
-          <div onClick={toggleSidebar} className="hover:bg-neutral-700 rounded-full p-2 hover:cursor-pointer">
+          <div
+            onClick={toggleSidebar}
+            className="hover:bg-neutral-700 rounded-full p-2 hover:cursor-pointer"
+          >
             {state === "expanded" ? (
-              <X 
-                size={24} 
+              <X
+                size={24}
                 // onClick={() => setSidebarOpen(false)}
               />
             ) : (
@@ -52,14 +56,20 @@ export function Header({
             placeholder="Search"
           />
         </div>
-        {status === 'authenticated' ? (
+        {status === "authenticated" ? (
           <div>
             <Button onClick={() => signOut()}>Logout</Button>
           </div>
-        ):(
+        ) : status === "loading" ? (
           <div>
-            <Button>Signin</Button>
+            <Button disabled>
+              Loading...
+            </Button>
           </div>
+        ) : status === "unauthenticated" && (
+          <Button onClick={() => router.push("/auth/signin")}>
+            Sign In
+          </Button>
         )}
       </div>
     );
