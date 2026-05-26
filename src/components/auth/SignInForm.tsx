@@ -50,41 +50,47 @@ export const SignInForm = () => {
   };
 
   return (
-    <form
-      noValidate
-      onSubmit={handleSubmit}
-      className="flex flex-col items-center border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
-    >
-      <div className="flex flex-col items-center mb-10 gap-2">
-        <p className="text-lg font-mono">
-          Welcome! Please sign in to your account.
+    <div className="flex flex-col items-center">
+      <form
+        noValidate
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
+      >
+        <div className="flex flex-col items-center mb-10 gap-2">
+          <p className="text-lg font-mono">
+            Welcome! Please sign in to your account.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-4 w-full">
+          <Input
+            name="email"
+            placeholder="name@domail.com"
+            type="email"
+            autoComplete="email"
+            required
+          />
+          <Input
+            name="password"
+            placeholder="8 characters minimum"
+            type="password"
+            autoComplete="current-password"
+            required
+          />
+          {error ? <p className="text-sm text-[#FF7B1D]">{error}</p> : null}
+          <Button className="font-mono mt-4" disabled={isLoading} type="submit">
+            {isLoading ? "Signing in..." : "Sign In"}
+          </Button>
+        </div>
+
+        <p className="font-mono mt-10">
+          <Link href={"/auth/forgot-password"}>Forgot password?</Link>
         </p>
-      </div>
-
-      <div className="flex flex-col gap-4 w-full">
-        <Input
-          name="email"
-          placeholder="Email"
-          type="email"
-          autoComplete="email"
-          required
-        />
-        <Input
-          name="password"
-          placeholder="password"
-          type="password"
-          autoComplete="current-password"
-          required
-        />
-        {error ? <p className="text-sm text-red-500">{error}</p> : null}
-        <Button className="font-mono mt-4" disabled={isLoading} type="submit">
-          {isLoading ? "Signing in..." : "Sign In"}
-        </Button>
-      </div>
-
-      <p className="text-lg font-mono mt-10">
-        Don&apos;t have an account? <Link href={"/auth/signup"}>Sign up</Link>
+      </form>
+      
+      <p className="mt-10">
+        Don&apos;t have an account? <Link href={"/auth/signup"}>Sign Up</Link>
       </p>
-    </form>
+    </div>
   );
 };

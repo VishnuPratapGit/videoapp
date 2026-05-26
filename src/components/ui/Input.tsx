@@ -6,14 +6,17 @@ type Props = ComponentProps<"input">;
 const Input = forwardRef<HTMLInputElement, Props>(
   ({ className, ...props }, ref) => {
     return (
-      <input
-        ref={ref}
-        className={twMerge(
-          "border-2 border-neutral-800 outline-none focus:border-neutral-400 rounded-md p-4",
-          className,
-        )}
-        {...props}
-      />
+      <div className="flex flex-col">
+        <label className="capitalize mb-2">{props.name}</label>
+        <input
+          ref={ref}
+          className={twMerge(
+            "border-2 border-neutral-800 outline-none focus:border-neutral-400 rounded-md p-4",
+            className,
+          )}
+          {...props}
+        />
+      </div>
     );
   },
 );

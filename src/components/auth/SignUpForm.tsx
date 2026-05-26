@@ -81,21 +81,21 @@ export const SignUpForm = () => {
       <div className="flex flex-col gap-4 w-full">
         <Input
           name="username"
-          placeholder="Username"
+          placeholder="Full Name"
           type="text"
           autoComplete="username"
           required
         />
         <Input
           name="email"
-          placeholder="Email"
+          placeholder="name@domail.com"
           type="email"
           autoComplete="email"
           required
         />
         <Input
           name="password"
-          placeholder="password"
+          placeholder="8 characters minimum"
           type="password"
           autoComplete="current-password"
           required
@@ -106,8 +106,8 @@ export const SignUpForm = () => {
         </Button>
       </div>
 
-      <p className="text-lg font-mono mt-10">
-        Already have an account? <Link href={"/auth/signin"}>Sign in</Link>
+      <p className="mt-10">
+        Already have an account? <Link href={"/auth/signin"}>Sign In</Link>
       </p>
     </form>
   );
