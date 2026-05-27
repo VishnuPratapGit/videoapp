@@ -1,4 +1,4 @@
-import { Home, Flame, Library, Heart, History, LucideIcon } from "lucide-react";
+import { Home, Flame, Library, Heart, History, LucideIcon, Settings } from "lucide-react";
 
 const iconMap = {
   Home,
@@ -6,6 +6,7 @@ const iconMap = {
   Library,
   Heart,
   History,
+  Settings,
 } satisfies Record<string, LucideIcon>;
 
 interface IconProps {

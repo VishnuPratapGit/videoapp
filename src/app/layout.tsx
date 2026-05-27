@@ -1,11 +1,21 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { JetBrains_Mono } from "next/font/google";
+import { JetBrains_Mono, Nunito_Sans, Outfit } from "next/font/google";
 import { Providers } from "../providers/RootProviders";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
+});
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  variable: "--font-nunito-sans",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
@@ -19,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jetBrainsMono.variable}>
+    <html lang="en" className={`${jetBrainsMono.variable} ${nunitoSans.variable} ${outfit.variable}`}>
       <body className="min-h-screen">
         <Providers>{children}</Providers>
       </body>

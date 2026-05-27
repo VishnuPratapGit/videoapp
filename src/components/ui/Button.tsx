@@ -12,7 +12,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={twMerge(
-          "border dark:border-neutral-600 px-4 py-3 cursor-pointer rounded-md bg-[#ff651d] font-bold hover:bg-[#ff561d] transition-colors active:outline-2 active:outline-offset-2",
+          "border dark:border-neutral-600 px-4 py-3 cursor-pointer rounded-md bg-[#ff2962] hover:bg-[#ff1957] transition-colors active:outline-2 active:outline-offset-2",
           className,
         )}
         {...props}

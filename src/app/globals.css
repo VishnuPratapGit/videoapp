@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
+@theme inline {
+  --font-sans: var(--font-nunito-sans);
+  --font-mono: var(--font-jetbrains-mono);
+  --font-outfit: var(--font-outfit);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --brand-coal: #0f0d0e;
+  --coal: var(--brand-coal);
+  --brand-charcoal: #231f20;
+  --charcoal: var(--brand-charcoal);
+  --brand-beige: #f9f4da;
+  --white: var(--brand-beige);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,15 +27,34 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit), Arial, Helvetica, sans-serif;
 }
 
 a {
-  /* color: #FF7B1D; */
   text-underline-offset: 4px;
-  
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+.signinpage {
+  /* background-image: url('/next.svg'); */
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--charcoal),
+      var(--charcoal) 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--charcoal),
+      var(--charcoal) 1px,
+      transparent 1px,
+      transparent 30px
+    );
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }

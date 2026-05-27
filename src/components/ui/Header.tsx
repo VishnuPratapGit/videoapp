@@ -58,18 +58,25 @@ export function Header({
         </div>
         {status === "authenticated" ? (
           <div>
-            <Button onClick={() => signOut()}>Logout</Button>
+            <Button className="py-2 my-2 " onClick={() => signOut()}>
+              Logout
+            </Button>
           </div>
         ) : status === "loading" ? (
           <div>
-            <Button disabled>
+            <Button className="py-2 my-2 " disabled>
               Loading...
             </Button>
           </div>
-        ) : status === "unauthenticated" && (
-          <Button onClick={() => router.push("/auth/signin")}>
-            Sign In
-          </Button>
+        ) : (
+          status === "unauthenticated" && (
+            <Button
+              className="py-2 my-2 "
+              onClick={() => router.push("/auth/signin")}
+            >
+              Sign In
+            </Button>
+          )
         )}
       </div>
     );

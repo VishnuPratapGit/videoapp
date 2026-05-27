@@ -7,7 +7,7 @@ const Input = forwardRef<HTMLInputElement, Props>(
   ({ className, ...props }, ref) => {
     return (
       <div className="flex flex-col">
-        <label className="capitalize mb-2">{props.name}</label>
+        <label className="capitalize mb-2 text-lg">{props.name}</label>
         <input
           ref={ref}
           className={twMerge(

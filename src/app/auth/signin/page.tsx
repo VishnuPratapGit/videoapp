@@ -2,7 +2,7 @@ import { SignInForm } from "@/src/components/auth/SignInForm";
 
 const SignInPage = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center flex-1">
       <SignInForm />
     </div>
   );

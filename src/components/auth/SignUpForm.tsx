@@ -7,6 +7,9 @@ import Button from "../ui/Button";
 import Input from "../ui/Input";
 import { createNewUser } from "@/src/features/users/user.actions";
 import Link from "next/link";
+import Spinner from "../ui/Spinner";
+import Divider from "../ui/Divider";
+import GoogleButton from "../ui/GoogleButton";
 
 export const SignUpForm = () => {
   const router = useRouter();
@@ -66,35 +69,58 @@ export const SignUpForm = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    setError("");
+    setIsLoading(true);
+    try {
+      const result = await signIn("google", {
+        redirect: true,
+        callbackUrl: callbackUrl,
+      });
+
+      if (!result?.ok && result?.error) {
+        setError("Google sign-in failed. Please try again.");
+      }
+    } catch (error) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <form
       noValidate
       onSubmit={handleSubmit}
-      className="flex flex-col items-center border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
+      className="flex flex-col items-center bg-neutral-950 border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
     >
       <div className="flex flex-col items-center mb-10 gap-2">
-        <p className="text-lg font-mono">
-          Welcome! Please create an account.
-        </p>
+        <p className="text-lg font-mono">Welcome! Please create an account.</p>
       </div>
+
+      <div className="w-full">
+        <GoogleButton onClick={handleGoogleSignIn} isLoading={isLoading} />
+      </div>
+
+      <Divider label="OR" />
 
       <div className="flex flex-col gap-4 w-full">
         <Input
-          name="username"
+          name="username*"
           placeholder="Full Name"
           type="text"
-          autoComplete="username"
+          autoComplete="off"
           required
         />
         <Input
-          name="email"
+          name="email*"
           placeholder="name@domail.com"
           type="email"
           autoComplete="email"
           required
         />
         <Input
-          name="password"
+          name="password*"
           placeholder="8 characters minimum"
           type="password"
           autoComplete="current-password"
@@ -102,7 +128,7 @@ export const SignUpForm = () => {
         />
         {error ? <p className="text-sm text-red-500">{error}</p> : null}
         <Button className="font-mono mt-4" disabled={isLoading} type="submit">
-          {isLoading ? "Creating account..." : "Sign Up"}
+          {isLoading ? <Spinner className="text-white mx-auto font-bold" /> : "Sign Up"}
         </Button>
       </div>
 

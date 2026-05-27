@@ -20,7 +20,9 @@ export function AppSidebar() {
   const isActive = (link: string) => pathname === link;
 
   return (
-    <div className={`border-r border-neutral-800 ${state === "collapsed" ? "w-20" : "w-64"}`}>
+    <div
+      className={`flex flex-col justify-between border-r border-neutral-800 ${state === "collapsed" ? "w-20" : "w-64"}`}
+    >
       <nav className="mt-3 p-2">
         {menuItems.map((item) => (
           <div
@@ -39,6 +41,17 @@ export function AppSidebar() {
           </div>
         ))}
       </nav>
+      <div
+        onClick={() => router.push("/settings")}
+        className={`flex m-2 cursor-pointer ${state === "expanded" ? "flex-row mb-4.75 px-4 pl-5" : "flex-col"} py-4 items-center gap-1 rounded-lg hover:bg-neutral-800 ${
+          isActive("/settings") ? "bg-neutral-800" : ""
+        }`}
+      >
+        <Icon icon="Settings" />
+        <span className={`${state === "expanded" ? "ml-5" : "text-[10px]"}`}>
+          {"Settings"}
+        </span>
+      </div>
     </div>
   );
 }
