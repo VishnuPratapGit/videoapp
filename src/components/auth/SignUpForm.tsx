@@ -106,21 +106,21 @@ export const SignUpForm = () => {
 
       <div className="flex flex-col gap-4 w-full">
         <Input
-          name="username*"
+          name="username"
           placeholder="Full Name"
           type="text"
           autoComplete="off"
           required
         />
         <Input
-          name="email*"
+          name="email"
           placeholder="name@domail.com"
           type="email"
           autoComplete="email"
           required
         />
         <Input
-          name="password*"
+          name="password"
           placeholder="8 characters minimum"
           type="password"
           autoComplete="current-password"

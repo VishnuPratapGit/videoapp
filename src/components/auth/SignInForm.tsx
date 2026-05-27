@@ -95,14 +95,14 @@ export const SignInForm = () => {
 
         <div className="flex flex-col gap-4 w-full">
           <Input
-            name="email*"
+            name="email"
             placeholder="name@domail.com"
             type="email"
             autoComplete="email"
             required
           />
           <Input
-            name="password*"
+            name="password"
             placeholder="8 characters minimum"
             type="password"
             autoComplete="current-password"
