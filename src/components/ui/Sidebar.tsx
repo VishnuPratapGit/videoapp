@@ -21,15 +21,15 @@ export function AppSidebar() {
 
   return (
     <div
-      className={`flex flex-col justify-between border-r border-neutral-800 ${state === "collapsed" ? "w-20" : "w-64"}`}
+      className={`flex flex-col justify-between border-r border-(--border-fade) ${state === "collapsed" ? "w-20" : "w-64"}`}
     >
       <nav className="mt-3 p-2">
         {menuItems.map((item) => (
           <div
             key={item.label}
             onClick={() => router.push(item.link)}
-            className={`flex cursor-pointer ${state === "expanded" ? "flex-row mb-4.75 px-4 pl-5" : "flex-col"} py-4 items-center gap-1 rounded-lg hover:bg-neutral-800 ${
-              isActive(item.link) ? "bg-neutral-800" : ""
+            className={`flex cursor-pointer ${state === "expanded" ? "flex-row mb-4.75 px-4 pl-5" : "flex-col"} py-4 items-center gap-1 rounded-lg hover:bg-(--surface-hover) ${
+              isActive(item.link) ? "bg-(--active-links)" : ""
             }`}
           >
             <Icon icon={item.icon} />

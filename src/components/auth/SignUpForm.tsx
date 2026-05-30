@@ -92,7 +92,7 @@ export const SignUpForm = () => {
     <form
       noValidate
       onSubmit={handleSubmit}
-      className="flex flex-col items-center bg-neutral-950 border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
+      className="flex flex-col items-center bg-(--background) border-2 rounded-xl p-10 border-(--border-fade) w-xl h-max mx-auto"
     >
       <div className="flex flex-col items-center mb-10 gap-2">
         <p className="text-lg font-mono">Welcome! Please create an account.</p>
@@ -128,7 +128,11 @@ export const SignUpForm = () => {
         />
         {error ? <p className="text-sm text-red-500">{error}</p> : null}
         <Button className="font-mono mt-4" disabled={isLoading} type="submit">
-          {isLoading ? <Spinner className="text-white mx-auto font-bold" /> : "Sign Up"}
+          {isLoading ? (
+            <Spinner className="text-white mx-auto font-bold" />
+          ) : (
+            "Sign Up"
+          )}
         </Button>
       </div>
 

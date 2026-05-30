@@ -78,7 +78,7 @@ export const SignInForm = () => {
       <form
         noValidate
         onSubmit={handleSubmit}
-        className="flex bg-neutral-950 flex-col items-center border-2 rounded-xl p-10 dark:border-neutral-700 w-xl h-max mx-auto"
+        className="flex bg-(--background) flex-col items-center border-2 rounded-xl p-10 border-(--border-fade) w-xl h-max mx-auto"
       >
         <div className="flex flex-col items-center mb-10 gap-4">
           <Logo title="BLOGGER" />
@@ -109,7 +109,11 @@ export const SignInForm = () => {
             required
           />
           {error ? <p className="text-sm text-[#FF7B1D]">{error}</p> : null}
-          <Button className="font-mono mt-4 font-bold" disabled={isLoading} type="submit">
+          <Button
+            className="font-mono mt-4 font-bold"
+            disabled={isLoading}
+            type="submit"
+          >
             {isLoading ? <Spinner /> : "Sign In"}
           </Button>
         </div>

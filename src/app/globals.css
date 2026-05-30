@@ -9,19 +9,53 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --brand-coal: #0f0d0e;
-  --coal: var(--brand-coal);
-  --brand-charcoal: #231f20;
-  --charcoal: var(--brand-charcoal);
-  --brand-beige: #f9f4da;
-  --white: var(--brand-beige);
+
+  --surface: #ffffff;
+  --surface-muted: #f5f5f5;
+  --surface-hover: #e8e8e8;
+
+  --border: #d4d4d4;
+  --border-fade: #ebebeb;
+  --border-strong: #a3a3a3;
+  
+  --muted: #525252;
+  --muted-strong: #262626;
+
+  --accent: #ff2962;
+  --accent-hover: #fb1351;
+  --accent-foreground: #ffffff;
+
+  --line: #e6e6e6;
+  --active-shade: #a3a3a3;
+  --inactive-shade: #b8b8b8;
+
+  --active-links: #e8e8e8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+
+  --surface: #0f0f0f;
+  --surface-muted: #171717;
+  --surface-hover: #262626;
+
+  --border: #404040;
+  --border-fade: #2d2d2d;
+  --border-strong: #737373;
+
+  --muted: #a3a3a3;
+  --muted-strong: #e5e5e5;
+
+  --accent: #ff2962;
+  --accent-hover: #fb1351;
+  --accent-foreground: #ffffff;
+
+  --line: #231f20;
+  --active-shade: #737373;
+  --inactive-shade: #2d2d2d;
+
+  --active-links: #262626;
 }
 
 body {
@@ -43,15 +77,15 @@ a:hover {
   background-image:
     repeating-linear-gradient(
       to right,
-      var(--charcoal),
-      var(--charcoal) 1px,
+      var(--line),
+      var(--line) 1px,
       transparent 1px,
       transparent 30px
     ),
     repeating-linear-gradient(
       to bottom,
-      var(--charcoal),
-      var(--charcoal) 1px,
+      var(--line),
+      var(--line) 1px,
       transparent 1px,
       transparent 30px
     );

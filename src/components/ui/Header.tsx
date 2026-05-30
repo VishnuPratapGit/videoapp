@@ -23,7 +23,7 @@ export function Header({
     const [inputActive, setInputActive] = useState(false);
 
     return (
-      <div className="flex items-center justify-between border-b border-neutral-800 py-2 px-5">
+      <div className="flex items-center justify-between border-b border-(--border-fade) py-2 px-5">
         <div className="flex items-center gap-4">
           <div
             onClick={toggleSidebar}
@@ -44,10 +44,10 @@ export function Header({
           <Logo title="BLOGGER" />
         </div>
         <div
-          className={`flex items-center w-1/3 border-2 ${inputActive ? "border-neutral-600" : "border-neutral-800"} rounded-full px-6`}
+          className={`flex items-center w-1/3 border-2 ${inputActive ? "border-(--border)" : "border-(--border-fade)"} rounded-full px-6 pr-0`}
         >
           <Search
-            className={`${inputActive ? "text-neutral-300" : "text-neutral-500"}`}
+            className={`${inputActive ? "text-(--active-shade)" : "text-(--inactive-shade)"}`}
           />
           <Input
             onFocus={() => setInputActive(true)}
