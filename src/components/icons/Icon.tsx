@@ -8,6 +8,7 @@ import {
   Settings,
   Moon,
   Sun,
+  CircleUserRound,
 } from "lucide-react";
 import { SVGProps } from "react";
 
@@ -20,15 +21,17 @@ const iconMap = {
   Settings,
   Moon,
   Sun,
+  CircleUserRound
 } satisfies Record<string, LucideIcon>;
 
 interface IconProps extends SVGProps<SVGSVGElement> {
-  icon: keyof typeof iconMap;
+  icon: string;
   size?: number;
 }
 
 export function Icon({ icon, size = 24, ...props }: IconProps) {
-  const Component = iconMap[icon];
+  const normalizedIcon = icon as keyof typeof iconMap;
+  const Component = iconMap[normalizedIcon];
 
   if (!Component) {
     console.warn(`Icon "${icon}" not found. Please check the icon name.`);

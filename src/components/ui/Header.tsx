@@ -7,6 +7,8 @@ import Logo from "./Logo";
 import { Menu, Search, X } from "lucide-react";
 import { useSidebar } from "@/src/context/SidebarContext";
 import { useRouter } from "next/navigation"
+import UserProfilePopover from "./UserProfilePopover";
+import Avatar from "./Avatar";
 
 type HeaderProps = {
   sidebarOpen?: boolean;
@@ -21,6 +23,11 @@ export function Header({
     const router = useRouter();
     const {state, toggleSidebar} = useSidebar();
     const [inputActive, setInputActive] = useState(false);
+    const [popupOpen, setPopupOpen] = useState(false);
+
+    const toggleProfilePopup = () => {
+      setPopupOpen((prev) => !prev)
+    }
 
     return (
       <div className="flex items-center justify-between border-b border-(--border-fade) py-2 px-5">
@@ -56,28 +63,15 @@ export function Header({
             placeholder="Search"
           />
         </div>
-        {status === "authenticated" ? (
-          <div>
-            <Button className="py-2 my-2 " onClick={() => signOut()}>
-              Logout
-            </Button>
-          </div>
-        ) : status === "loading" ? (
-          <div>
-            <Button className="py-2 my-2 " disabled>
-              Loading...
-            </Button>
-          </div>
-        ) : (
-          status === "unauthenticated" && (
-            <Button
-              className="py-2 my-2 "
-              onClick={() => router.push("/auth/signin")}
-            >
-              Sign In
-            </Button>
-          )
-        )}
+
+        <div className="relative" onClick={toggleProfilePopup}>
+          <Avatar />
+          {popupOpen && (
+            <div className="absolute right-0 top-11">
+              <UserProfilePopover />
+            </div>
+          )}
+        </div>
       </div>
     );
 }

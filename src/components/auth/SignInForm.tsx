@@ -18,6 +18,7 @@ export const SignInForm = () => {
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +57,7 @@ export const SignInForm = () => {
 
   const handleGoogleSignIn = async () => {
     setError("");
-    setIsLoading(true);
+    setIsGoogleLoading(true);
     try {
       const result = await signIn("google", {
         redirect: true,
@@ -69,7 +70,7 @@ export const SignInForm = () => {
     } catch (error) {
       setError("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsGoogleLoading(false);
     }
   };
 
@@ -88,10 +89,15 @@ export const SignInForm = () => {
         </div>
 
         <div className="w-full">
-          <GoogleButton onClick={handleGoogleSignIn} isLoading={isLoading} />
+          <GoogleButton
+            onClick={handleGoogleSignIn}
+            isLoading={isGoogleLoading}
+          />
         </div>
 
-        <Divider label="OR" />
+        <div className="mt-6 w-full">
+          <Divider label="OR" />
+        </div>
 
         <div className="flex flex-col gap-4 w-full">
           <Input
@@ -110,7 +116,7 @@ export const SignInForm = () => {
           />
           {error ? <p className="text-sm text-[#FF7B1D]">{error}</p> : null}
           <Button
-            className="font-mono mt-4 font-bold"
+            className="font-mono mt-4 font-bold flex items-center justify-center"
             disabled={isLoading}
             type="submit"
           >

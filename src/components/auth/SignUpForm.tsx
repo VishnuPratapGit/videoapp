@@ -102,7 +102,9 @@ export const SignUpForm = () => {
         <GoogleButton onClick={handleGoogleSignIn} isLoading={isLoading} />
       </div>
 
-      <Divider label="OR" />
+      <div className="mt-6 w-full">
+        <Divider label="OR" />
+      </div>
 
       <div className="flex flex-col gap-4 w-full">
         <Input

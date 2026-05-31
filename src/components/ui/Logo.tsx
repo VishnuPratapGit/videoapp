@@ -1,12 +1,15 @@
-import React from 'react'
+'use client'
+
+import { useRouter } from "next/navigation";
 
 type LogoProps = {
     title: string;
 }
 
 const Logo = ({ title }: LogoProps) => {
+  const router = useRouter()
   return (
-    <div className='font-bold font-mono text-2xl'>{title}</div>
+    <div onClick={()=>router.push('/')} className='font-bold font-mono text-2xl cursor-pointer'>{title}</div>
   )
 }
 
