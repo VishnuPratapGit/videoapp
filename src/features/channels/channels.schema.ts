@@ -9,6 +9,7 @@ export interface IChannel extends Document {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
+  slug: string;
 }
 
 const ChannelSchema = new Schema<IChannel>(
@@ -37,7 +38,13 @@ const ChannelSchema = new Schema<IChannel>(
     userId: {
       type: String,
       required: true,
-    }
+    },
+    slug: {
+      type: String,
+      unique: true,
+      index: true,
+      lowercase: true,
+    },
   },
   { timestamps: true },
 );

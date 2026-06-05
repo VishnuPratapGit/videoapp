@@ -9,7 +9,7 @@ export default function MainLayout({
   return (
     <div className="flex min-h-screen w-full flex-col">
       <Header />
-      <div className="flex flex-1">
+      <div className="flex flex-1 h-">
         <AppSidebar />
         <main className="flex-1 p-10">{children}</main>
       </div>

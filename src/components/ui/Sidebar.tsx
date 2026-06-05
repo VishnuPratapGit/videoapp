@@ -5,23 +5,23 @@ import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "../icons/Icon";
 
 export function AppSidebar() {
-  const {state} = useSidebar();
+  const { state } = useSidebar();
   const router = useRouter();
   const pathname = usePathname();
 
   const menuItems = [
-    { icon: 'Home', label: "Home", link: "/" },
-    { icon: 'Flame', label: "Shorts", link: "/shorts" },
-    { icon: 'Library', label: "Library", link: "/library" },
-    { icon: 'Heart', label: "Liked", link: "/liked" },
-    { icon: 'History', label: "History", link: "/history" },
+    { icon: "Home", label: "Home", link: "/" },
+    { icon: "Flame", label: "Shorts", link: "/shorts" },
+    { icon: "Library", label: "Library", link: "/library" },
+    { icon: "Heart", label: "Liked", link: "/liked" },
+    { icon: "History", label: "History", link: "/history" },
   ] as const;
 
   const isActive = (link: string) => pathname === link;
 
   return (
     <div
-      className={`flex flex-col justify-between border-r border-(--border-fade) ${state === "collapsed" ? "w-20" : "w-64"}`}
+      className={`sticky top-20 h-[calc(100vh-80px)] flex flex-col justify-between border-r border-(--border-fade) ${state === "collapsed" ? "w-20" : "w-64"}`}
     >
       <nav className="mt-3 p-2">
         {menuItems.map((item) => (

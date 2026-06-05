@@ -102,7 +102,7 @@ export const SignInForm = () => {
         <div className="flex flex-col gap-4 w-full">
           <Input
             name="email"
-            placeholder="name@domail.com"
+            placeholder="name@domain.com"
             type="email"
             autoComplete="email"
             required

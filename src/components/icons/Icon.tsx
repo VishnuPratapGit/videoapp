@@ -9,6 +9,8 @@ import {
   Moon,
   Sun,
   CircleUserRound,
+  ArrowLeft,
+  Plus,
 } from "lucide-react";
 import { SVGProps } from "react";
 
@@ -21,7 +23,9 @@ const iconMap = {
   Settings,
   Moon,
   Sun,
-  CircleUserRound
+  CircleUserRound,
+  ArrowLeft,
+  Plus
 } satisfies Record<string, LucideIcon>;
 
 interface IconProps extends SVGProps<SVGSVGElement> {

@@ -3,10 +3,11 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IUser extends Document {
   username: string;
   email: string;
-  password: string;
+  password?: string;
   avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
+  slug: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -23,11 +24,20 @@ const UserSchema = new Schema<IUser>(
       trim: true,
       lowercase: true,
     },
-    password:{
+    password: {
       type: String,
-      required: true
+      required: false,
     },
-    avatarUrl: { type: String },
+    avatarUrl: {
+      type: String,
+      required: false,
+    },
+    slug: {
+      type: String,
+      unique: true,
+      index: true,
+      lowercase: true,
+    },
   },
   { timestamps: true },
 );

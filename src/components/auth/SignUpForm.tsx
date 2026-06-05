@@ -74,7 +74,6 @@ export const SignUpForm = () => {
     setIsLoading(true);
     try {
       const result = await signIn("google", {
-        redirect: true,
         callbackUrl: callbackUrl,
       });
 
@@ -116,7 +115,7 @@ export const SignUpForm = () => {
         />
         <Input
           name="email"
-          placeholder="name@domail.com"
+          placeholder="name@domain.com"
           type="email"
           autoComplete="email"
           required

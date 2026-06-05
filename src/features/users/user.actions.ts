@@ -4,6 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/src/lib/db";
 import { User } from "./user.schema";
+import { buildBaseSlug, buildSlugWithSuffix } from "@/src/lib/generateSlug";
 
 const createUserInputSchema = z.object({
   username: z.string().trim().min(3),
@@ -26,10 +27,19 @@ type AuthUser = {
   email: string;
 };
 
+
+export async function generateUniqueSlug(displayName: string | undefined) {
+  if(!displayName) return;
+  const base = buildBaseSlug(displayName);
+  const isTaken = await User.exists({ slug: "@" + base });
+  if (!isTaken) return "@" + base;
+  return buildSlugWithSuffix(base);
+}
+
+
 export async function createNewUser(formData: CreateUserInput) {
   try {
     const parsedUserData = createUserInputSchema.safeParse(formData);
-
     if (!parsedUserData.success) {
       return {
         success: false,
@@ -37,22 +47,22 @@ export async function createNewUser(formData: CreateUserInput) {
       };
     }
 
-    const { username, email, password } = parsedUserData.data;
+    const { username, email, password } = parsedUserData?.data;
 
     await dbConnect();
 
     const existingUser = await User.exists({ email });
-
     if (existingUser) {
       return { success: false, error: "Email is already registered." };
     }
 
+    const uniqueSlug = await generateUniqueSlug(username)
     const hashedPassword = await bcrypt.hash(password, 12);
-
     const newUser = await User.create({
       username,
       email,
       password: hashedPassword,
+      slug: uniqueSlug,
     });
 
     const userObject = newUser.toObject({
@@ -75,6 +85,7 @@ export async function createNewUser(formData: CreateUserInput) {
     };
   }
 }
+
 
 export async function signInUser(formData: SignInUserInput): Promise<AuthUser | null> {
   try {

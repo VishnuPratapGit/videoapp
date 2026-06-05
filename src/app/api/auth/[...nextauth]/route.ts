@@ -1,4 +1,6 @@
-import { signInUser } from "@/src/features/users/user.actions";
+import { generateUniqueSlug, signInUser } from "@/src/features/users/user.actions";
+import { User } from "@/src/features/users/user.schema";
+import { dbConnect } from "@/src/lib/db";
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -41,9 +43,47 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
 
+  callbacks: {
+    async signIn({ user, profile, account }) {
+      try {
+        await dbConnect();
+
+        if (account?.provider === "google" && profile) {
+          if (!user.email) {
+            return false;
+          }
+
+          const existingUser = await User.findOne({ email: user.email });
+          if (!existingUser) {
+            const uniqueSlug = await generateUniqueSlug(user?.name || undefined)
+            await User.create({
+              email: user.email,
+              username: profile.name || user.email.split("@")[0],
+              avatarUrl: profile.image || user.image || undefined,
+              slug: uniqueSlug,
+            });
+          } else {
+            await User.updateOne(
+              { email: user.email },
+              {
+                avatarUrl: profile.image || user.image || undefined,
+                username: profile.name || existingUser.username,
+              },
+            );
+          }
+        }
+
+        return true;
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return false;
+      }
+    }
+  },
+
   secret: process.env.NEXTAUTH_SECRET,
 };
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
