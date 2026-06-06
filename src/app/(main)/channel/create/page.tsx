@@ -2,11 +2,13 @@
 import Avatar from "@/src/components/ui/Avatar";
 import Button from "@/src/components/ui/Button";
 import Input from "@/src/components/ui/Input";
+import { Toaster } from "@/src/components/ui/Toaster";
 import {
   checkHandleUnique,
   createChannel,
 } from "@/src/features/channels/channels.actions";
 import useDebounce from "@/src/hooks/useDebounce";
+import { useToast } from "@/src/hooks/useToast";
 import { generateUniqueSlug } from "@/src/lib/generateSlug";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -31,6 +33,7 @@ const page = () => {
   const debouncedChannelValue = useDebounce(channelData.channel, 300);
   const debouncedHandleValue = useDebounce(channelData.handle, 300);
   const router = useRouter();
+  const {toast, toasts, dismiss} = useToast();
 
   useEffect(() => {
     if (debouncedHandleValue) isHandleUnique(debouncedHandleValue);
@@ -116,7 +119,16 @@ const page = () => {
       handle,
       avatar: avatarPreview,
     });
-    console.log(res, "rescreatechannel");
+   
+    if(!res?.success){
+      toast({
+        type: "error",
+        name: "Failed!",
+        description: res?.message,
+        position: "top-end",
+        duration: 4000,
+      });
+    }
 
     if(res?.success){
       setChannelData({ channel: "", handle: "" });
@@ -214,6 +226,7 @@ const page = () => {
           </Button>
         </div>
       </div>
+      <Toaster toasts={toasts} dismiss={dismiss} />
     </div>
   );
 };

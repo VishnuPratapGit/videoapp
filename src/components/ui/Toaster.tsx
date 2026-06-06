@@ -1,4 +1,5 @@
-import { useToast } from "@/src/hooks/useToast";
+import { Toast } from "@/src/hooks/useToast";
+import { Icon } from "../icons/Icon";
 
 const POSITION_CLASSES: Record<string, string> = {
   "top-start": "top-4 left-4 items-start",
@@ -28,10 +29,7 @@ const TYPE_STYLES = {
   },
 };
 
-export function Toaster({toasts, dismiss}) {
-  const { toasts, dismiss } = useToast();
-
-  // Group toasts by position
+export function Toaster({toasts, dismiss}:{toasts: Toast[], dismiss: (id: string) => void }) {
   const grouped = toasts.reduce<Record<string, typeof toasts>>((acc, t) => {
     (acc[t.position] ??= []).push(t);
     return acc;
@@ -63,22 +61,22 @@ export function Toaster({toasts, dismiss}) {
                 </span>
                 <div className="flex-1 min-w-0">
                   {toast.name && (
-                    <p className="text-sm font-medium leading-tight">
+                    <p className="font-medium leading-tight">
                       {toast.name}
                     </p>
                   )}
                   {toast.description && (
-                    <p className="text-xs opacity-75 mt-0.5">
+                    <p className="text-sm opacity-75 mt-0.5">
                       {toast.description}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={() => dismiss(toast.id)}
-                  className="opacity-50 hover:opacity-100 text-lg leading-none shrink-0"
+                  className="opacity-50 hover:opacity-100 leading-none shrink-0"
                   aria-label="Dismiss"
                 >
-                  ×
+                  <Icon icon="X" size={18}/>
                 </button>
               </div>
             );

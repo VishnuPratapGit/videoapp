@@ -9,7 +9,7 @@ type ToastPosition =
   | "bottom-center"
   | "bottom-end";
 
-interface ToastOptions {
+export interface ToastOptions {
   name?: string;
   description?: string;
   duration?: number;
@@ -17,7 +17,7 @@ interface ToastOptions {
   type: ToastType;
 }
 
-interface Toast extends Required<Omit<ToastOptions, "position">> {
+export interface Toast extends Required<Omit<ToastOptions, "position">> {
   id: string;
   position: ToastPosition;
   createdAt: number;
