@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface IChannel extends Document {
   name: string;
@@ -6,10 +6,10 @@ export interface IChannel extends Document {
   avatar: string;
   description: string;
   channelUrl: string;
-  userId: string;
+  userId: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
-  slug: string;
+  handle: string;
 }
 
 const ChannelSchema = new Schema<IChannel>(
@@ -36,11 +36,13 @@ const ChannelSchema = new Schema<IChannel>(
       required: true,
     },
     userId: {
-      type: String,
+      type: Schema?.Types?.ObjectId,
+      ref: "User",
       required: true,
     },
-    slug: {
+    handle: {
       type: String,
+      required: true,
       unique: true,
       index: true,
       lowercase: true,

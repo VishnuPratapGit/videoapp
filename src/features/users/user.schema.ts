@@ -7,7 +7,7 @@ export interface IUser extends Document {
   avatarUrl?: string;
   createdAt: Date;
   updatedAt: Date;
-  slug: string;
+  handle: string;
 }
 
 const UserSchema = new Schema<IUser>(
@@ -32,8 +32,9 @@ const UserSchema = new Schema<IUser>(
       type: String,
       required: false,
     },
-    slug: {
+    handle: {
       type: String,
+      required: true,
       unique: true,
       index: true,
       lowercase: true,

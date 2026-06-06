@@ -2,20 +2,22 @@
 import Avatar from "@/src/components/ui/Avatar";
 import Button from "@/src/components/ui/Button";
 import Input from "@/src/components/ui/Input";
-import { checkHandleUnique } from "@/src/features/channels/channels.actions";
+import {
+  checkHandleUnique,
+  createChannel,
+} from "@/src/features/channels/channels.actions";
+import useDebounce from "@/src/hooks/useDebounce";
+import { generateUniqueSlug } from "@/src/lib/generateSlug";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
 
 const ChannelZodSchema = z.object({
-  name: z.string().min(4, "Name must be at least 4 characters"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
   handle: z.string().min(3, "Handle must be at least 3 characters"),
 });
 
 const page = () => {
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-  const [error, setError] = useState<Record<string, string> | null>(null);
-  const [isHandleCorrect, setIsHandleCorrect] = useState<Boolean>(false);
-  const [debouncedHandleValue, setDebouncedHandleValue] = useState<string | null>(null);
   const [channelData, setChannelData] = useState<{
     channel: string;
     handle: string;
@@ -23,7 +25,20 @@ const page = () => {
     channel: "",
     handle: "",
   });
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [error, setError] = useState<Record<string, string> | null>(null);
+  const [isHandleCorrectAndUnique, setIsHandleCorrectAndUnique] = useState<Boolean>(false);
+  const debouncedChannelValue = useDebounce(channelData.channel, 300);
+  const debouncedHandleValue = useDebounce(channelData.handle, 300);
+  const router = useRouter();
 
+  useEffect(() => {
+    if (debouncedHandleValue) isHandleUnique(debouncedHandleValue);
+  }, [debouncedHandleValue]);
+
+  useEffect(() => {
+    if (debouncedChannelValue) generateSlug();
+  }, [debouncedChannelValue]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -39,11 +54,53 @@ const page = () => {
     setAvatarPreview(previewUrl);
   };
 
+  const isHandleUnique = async (handle: string | null) => {
+    if (!handle) return;
+    const res = await checkHandleUnique(handle); //@anything
+    if (res?.success) {
+      setIsHandleCorrectAndUnique(true);
+      return true;
+    } else {
+      setIsHandleCorrectAndUnique(false);
+      return false;
+    }
+  };
 
-  const handleSubmit = () => {
+  const generateSlug = async () => {
+    if (!channelData.channel) return;
+    const suggestedHandle = await generateUniqueSlug(channelData.channel);
+    if (suggestedHandle) {
+      setChannelData((prev) => ({
+        ...prev,
+        handle: suggestedHandle,
+      }));
+    }
+  };
+
+  const createOwnHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value;
+    if(!value.startsWith('@') && value?.length>0){
+      value = '@'+value;
+    }
+    setIsHandleCorrectAndUnique(false);
+    setError(null);
+    setChannelData((prev) => ({
+      ...prev,
+      handle: value,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    const { channel, handle } = channelData;
+
+    if (!isHandleCorrectAndUnique) {
+      setError((prev) => ({ ...prev, handle: "Handle Should be unique!" }));
+      return;
+    }
+
     const result = ChannelZodSchema.safeParse({
-      name: channelData?.channel,
-      handle: channelData?.handle,
+      name: channel,
+      handle,
     });
 
     if (!result.success) {
@@ -54,59 +111,21 @@ const page = () => {
       return;
     }
 
-    //handle submit
+    const res = await createChannel({
+      name: channel,
+      handle,
+      avatar: avatarPreview,
+    });
+    console.log(res, "rescreatechannel");
 
-    setChannelData({channel: '', handle: ''})
-    setDebouncedHandleValue(null)
-    setIsHandleCorrect(false)
-    setAvatarPreview(null)
-    setError(null);
-  };
-
-
-  const isHandleUnique = async (handle: string | null) => {
-    if(!handle) return;
-    
-    const res = await checkHandleUnique(handle);
-    
-    if (res?.success) {
-      setIsHandleCorrect(true);
-      return true;
-    } else {
-      setIsHandleCorrect(false);
-      return false;
+    if(res?.success){
+      setChannelData({ channel: "", handle: "" });
+      setIsHandleCorrectAndUnique(false);
+      setAvatarPreview(null);
+      setError(null);
+      router.push('/channel') 
     }
   };
-
-
-  const handleSlugFormation = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
-    if (value.startsWith("@")) {
-      value = value.slice(1);
-    }
-
-    setChannelData((prev) => ({
-      ...prev,
-      handle: value,
-    }));
-
-    setIsHandleCorrect(false);
-    setError(null);
-  };
-
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedHandleValue(channelData?.handle);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [channelData?.handle]);
-
-
-  useEffect(()=>{
-    isHandleUnique(debouncedHandleValue);
-  }, [debouncedHandleValue])
 
   return (
     <div>
@@ -164,8 +183,7 @@ const page = () => {
             <div>
               <Input
                 value={channelData?.handle}
-                onChange={handleSlugFormation}
-                prefix="@"
+                onChange={createOwnHandle}
                 name="handle"
                 placeholder="Handle"
                 className="py-3"
@@ -174,9 +192,11 @@ const page = () => {
                 <p className="text-sm text-red-500">{error?.handle}</p>
               ) : (
                 <p
-                  className={`${isHandleCorrect ? "text-emerald-500" : "text-rose-500"}`}
+                  className={`${isHandleCorrectAndUnique ? "text-emerald-500" : "text-rose-500"}`}
                 >
-                  {channelData?.handle ? "@" + channelData?.handle : ""}
+                  {channelData?.handle && debouncedHandleValue
+                    ? debouncedHandleValue
+                    : ""}
                 </p>
               )}
             </div>

@@ -11,6 +11,7 @@ import {
   CircleUserRound,
   ArrowLeft,
   Plus,
+  TvMinimalPlay,
 } from "lucide-react";
 import { SVGProps } from "react";
 
@@ -25,7 +26,8 @@ const iconMap = {
   Sun,
   CircleUserRound,
   ArrowLeft,
-  Plus
+  Plus,
+  TvMinimalPlay
 } satisfies Record<string, LucideIcon>;
 
 interface IconProps extends SVGProps<SVGSVGElement> {

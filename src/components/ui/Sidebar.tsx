@@ -15,6 +15,7 @@ export function AppSidebar() {
     { icon: "Library", label: "Library", link: "/library" },
     { icon: "Heart", label: "Liked", link: "/liked" },
     { icon: "History", label: "History", link: "/history" },
+    { icon: "TvMinimalPlay", label: "Channels", link: "/channel" },
   ] as const;
 
   const isActive = (link: string) => pathname === link;

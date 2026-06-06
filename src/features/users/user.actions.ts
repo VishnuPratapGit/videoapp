@@ -4,7 +4,7 @@ import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/src/lib/db";
 import { User } from "./user.schema";
-import { buildBaseSlug, buildSlugWithSuffix } from "@/src/lib/generateSlug";
+import { generateUniqueSlug } from "@/src/lib/generateSlug";
 
 const createUserInputSchema = z.object({
   username: z.string().trim().min(3),
@@ -26,16 +26,6 @@ type AuthUser = {
   name: string;
   email: string;
 };
-
-
-export async function generateUniqueSlug(displayName: string | undefined) {
-  if(!displayName) return;
-  const base = buildBaseSlug(displayName);
-  const isTaken = await User.exists({ slug: "@" + base });
-  if (!isTaken) return "@" + base;
-  return buildSlugWithSuffix(base);
-}
-
 
 export async function createNewUser(formData: CreateUserInput) {
   try {
@@ -62,7 +52,7 @@ export async function createNewUser(formData: CreateUserInput) {
       username,
       email,
       password: hashedPassword,
-      slug: uniqueSlug,
+      handle: uniqueSlug,
     });
 
     const userObject = newUser.toObject({
@@ -102,6 +92,10 @@ export async function signInUser(formData: SignInUserInput): Promise<AuthUser | 
     const user = await User.findOne({ email });
 
     if (!user) {
+      return null;
+    }
+
+    if (!user.password) {
       return null;
     }
 
