@@ -128,6 +128,14 @@ const page = () => {
         position: "top-end",
         duration: 4000,
       });
+    }else{
+      toast({
+        type: "success",
+        name: "Success",
+        description: res?.message,
+        position: "top-end",
+        duration: 4000,
+      });
     }
 
     if(res?.success){
@@ -135,7 +143,7 @@ const page = () => {
       setIsHandleCorrectAndUnique(false);
       setAvatarPreview(null);
       setError(null);
-      router.push('/channel') 
+      setTimeout(() => router.push("/channel"), 1000); 
     }
   };
 
@@ -202,15 +210,11 @@ const page = () => {
               />
               {error?.handle ? (
                 <p className="text-sm text-red-500">{error?.handle}</p>
-              ) : (
-                <p
-                  className={`${isHandleCorrectAndUnique ? "text-emerald-500" : "text-rose-500"}`}
-                >
-                  {channelData?.handle && debouncedHandleValue
-                    ? debouncedHandleValue
-                    : ""}
+              ) : (channelData?.handle && (
+                <p className={`border px-2 py-1 w-max rounded-md mt-2 ${isHandleCorrectAndUnique ? "text-emerald-700 border-emerald-700 bg-emerald-200" : "text-rose-700 bg-rose-200 border-rose-700"}`}>
+                  {channelData?.handle ? channelData?.handle : ""}
                 </p>
-              )}
+              ))}
             </div>
           </div>
 
