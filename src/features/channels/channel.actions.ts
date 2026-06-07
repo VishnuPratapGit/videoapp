@@ -1,20 +1,12 @@
 "use server";
 
 import { dbConnect } from "@/src/lib/db";
-import * as z from "zod";
 import slugify from "slugify";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { Channel } from "@/src/models/Channels";
 import { User } from "@/src/models/User";
-
-const ChannelZodSchema = z.object({
-  name: z.string().min(3, "Channel name must be at least 3 characters"),
-  handle: z
-    .string()
-    .min(3, "Handle must be at least 3 characters")
-    .toLowerCase(),
-});
+import { ChannelZodSchema } from "./channel.validation";
 
 export async function checkHandleUnique(value: string) {
   try {

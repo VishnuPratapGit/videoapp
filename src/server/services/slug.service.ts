@@ -1,9 +1,11 @@
+"use server"
+
 import crypto from "crypto";
 import { User } from "../../models/User";
 import { Channel } from "../../models/Channels";
 import { dbConnect } from "../../lib/db";
 
-export function buildBaseSlug(displayName: string) {
+export async function buildBaseSlug(displayName: string) {
   return displayName
     .toLowerCase()
     .trim()
@@ -12,7 +14,7 @@ export function buildBaseSlug(displayName: string) {
     .slice(0, 20);
 }
 
-export function buildSlugWithSuffix(base: string) {
+export async function buildSlugWithSuffix(base: string) {
   const unique = crypto.randomUUID().replace(/-/g, "").slice(0, 8);
   return `@${base}_${unique}`;
 }

@@ -44,8 +44,8 @@ export function AppSidebar() {
       </nav>
       <div
         onClick={() => router.push("/settings")}
-        className={`flex m-2 cursor-pointer ${state === "expanded" ? "flex-row mb-4.75 px-4 pl-5" : "flex-col"} py-4 items-center gap-1 rounded-lg hover:bg-neutral-800 ${
-          isActive("/settings") ? "bg-neutral-800" : ""
+        className={`flex m-2 cursor-pointer ${state === "expanded" ? "flex-row mb-4.75 px-4 pl-5" : "flex-col"} py-4 items-center gap-1 rounded-lg hover:bg-(--surface-hover) ${
+          isActive("/settings") ? "bg-(--active-links)" : ""
         }`}
       >
         <Icon icon="Settings" />

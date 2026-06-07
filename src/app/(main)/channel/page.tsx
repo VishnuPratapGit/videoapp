@@ -44,7 +44,7 @@ export const ChannelsPage = async () => {
         </div>
       </div>
 
-      <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="subtle-scrollbar h-[calc(100vh-240px)] p-2 overflow-y-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {channels.length === 0 ? (
           <div>No channels yet</div>
         ) : (

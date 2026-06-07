@@ -6,12 +6,54 @@
   --font-outfit: var(--font-outfit);
 }
 
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .subtle-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 100, 100, 0.22) transparent;
+  }
+
+  .subtle-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .subtle-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.18);
+    border-radius: 9999px;
+  }
+
+  .subtle-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 100, 100, 0.36);
+  }
+
+  .subtle-edge-indicator::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 6px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.04));
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
 
   --surface: #ffffff;
   --surface-muted: #f5f5f5;
+  --surface-muted-fade: #eeeeee;
   --surface-hover: #e8e8e8;
   --muted: #939393;
   --muted-strong: #e5e5e5;
@@ -40,6 +82,7 @@
 
   --surface: #0f0f0f;
   --surface-muted: #171717;
+  --surface-muted-fade: #111111;
   --surface-hover: #262626;
   --muted: #a1a1a1;
   --muted-strong: #262626;
@@ -75,7 +118,7 @@ a:hover {
   text-decoration: underline;
 }
 
-.signinpage {
+.signinpage, .pattern {
   /* background-image: url('/next.svg'); */
   background-image:
     repeating-linear-gradient(

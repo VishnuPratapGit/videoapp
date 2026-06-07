@@ -3,21 +3,16 @@ import Avatar from "@/src/components/ui/Avatar";
 import Button from "@/src/components/ui/Button";
 import Input from "@/src/components/ui/Input";
 import { Toaster } from "@/src/components/ui/Toaster";
+import { ChannelZodSchema } from "@/src/features/channels/channel.validation";
 import {
   checkHandleUnique,
   createChannel,
-} from "@/src/features/channels/channels.actions";
+} from "@/src/features/channels/channel.actions";
 import useDebounce from "@/src/hooks/useDebounce";
 import { useToast } from "@/src/hooks/useToast";
 import { generateUniqueSlug } from "@/src/server/services/slug.service";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import * as z from "zod";
-
-const ChannelZodSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters"),
-  handle: z.string().min(3, "Handle must be at least 3 characters"),
-});
 
 const page = () => {
   const [channelData, setChannelData] = useState<{
@@ -29,8 +24,7 @@ const page = () => {
   });
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [error, setError] = useState<Record<string, string> | null>(null);
-  const [isHandleCorrectAndUnique, setIsHandleCorrectAndUnique] =
-    useState<Boolean>(false);
+  const [isHandleCorrectAndUnique, setIsHandleCorrectAndUnique] = useState<Boolean>(false);
   const debouncedChannelValue = useDebounce(channelData.channel, 300);
   const debouncedHandleValue = useDebounce(channelData.handle, 300);
   const router = useRouter();
@@ -65,6 +59,10 @@ const page = () => {
       setIsHandleCorrectAndUnique(true);
       return true;
     } else {
+      setError((prev) => ({
+        ...prev,
+        handle: res?.message ?? "Handle Should be unique!",
+      }));
       setIsHandleCorrectAndUnique(false);
       return false;
     }
@@ -161,7 +159,7 @@ const page = () => {
         </Button>
       </div>
 
-      <div className="bg-(--surface-muted) p-8 rounded-3xl sm:w-full md:w-2xl m-auto border border-(--border-fade)">
+      <div className="bg-(--surface-muted-fade) p-8 rounded-lg sm:w-full md:w-2xl m-auto border border-(--border-fade)">
         <h1 className="text-xl">Create new channel</h1>
 
         <div className="flex flex-col justify-center w-full items-center gap-5 p-10 pt-8 px-20">

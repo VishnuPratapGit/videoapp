@@ -5,20 +5,9 @@ import bcrypt from "bcryptjs";
 import { dbConnect } from "@/src/lib/db";
 import { generateUniqueSlug } from "@/src/server/services/slug.service";
 import { User } from "@/src/models/User";
-
-const createUserInputSchema = z.object({
-  username: z.string().trim().min(3),
-  email: z.email(),
-  password: z.string().min(8),
-});
+import { createUserInputSchema, signInUserInputSchema } from "./user.validation";
 
 type CreateUserInput = z.infer<typeof createUserInputSchema>;
-
-const signInUserInputSchema = z.object({
-  email: z.email(),
-  password: z.string().min(1),
-});
-
 type SignInUserInput = z.infer<typeof signInUserInputSchema>;
 
 type AuthUser = {
