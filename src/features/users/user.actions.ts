@@ -1,10 +1,10 @@
-'use server'
+"use server";
 
 import { z } from "zod";
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/src/lib/db";
-import { User } from "./user.schema";
-import { generateUniqueSlug } from "@/src/lib/generateSlug";
+import { generateUniqueSlug } from "@/src/server/services/slug.service";
+import { User } from "@/src/models/User";
 
 const createUserInputSchema = z.object({
   username: z.string().trim().min(3),
@@ -46,7 +46,7 @@ export async function createNewUser(formData: CreateUserInput) {
       return { success: false, error: "Email is already registered." };
     }
 
-    const uniqueSlug = await generateUniqueSlug(username)
+    const uniqueSlug = await generateUniqueSlug(username);
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       username,
@@ -71,13 +71,17 @@ export async function createNewUser(formData: CreateUserInput) {
 
     return {
       success: false,
-      error: error instanceof Error ? error.message : "An unexpected error occurred.",
+      error:
+        error instanceof Error
+          ? error.message
+          : "An unexpected error occurred.",
     };
   }
 }
 
-
-export async function signInUser(formData: SignInUserInput): Promise<AuthUser | null> {
+export async function signInUser(
+  formData: SignInUserInput,
+): Promise<AuthUser | null> {
   try {
     const parsedUserData = signInUserInputSchema.safeParse(formData);
 

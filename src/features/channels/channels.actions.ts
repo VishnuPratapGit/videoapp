@@ -2,28 +2,19 @@
 
 import { dbConnect } from "@/src/lib/db";
 import * as z from "zod";
-import { User } from "../users/user.schema";
-import { Channel } from "./channels.schema";
 import slugify from "slugify";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
-
-
+import { Channel } from "@/src/models/Channels";
+import { User } from "@/src/models/User";
 
 const ChannelZodSchema = z.object({
-  name: z
-    .string()
-    .min(
-      3,
-      "Channel name must be at least 3 characters",
-    ),
+  name: z.string().min(3, "Channel name must be at least 3 characters"),
   handle: z
     .string()
     .min(3, "Handle must be at least 3 characters")
     .toLowerCase(),
 });
-
-
 
 export async function checkHandleUnique(value: string) {
   try {
@@ -35,9 +26,13 @@ export async function checkHandleUnique(value: string) {
     await dbConnect();
 
     const sanitizedHandle = result?.data?.toLowerCase().trim();
-    
-    const isHandleExistsInChannels = await Channel.exists({handle: sanitizedHandle});
-    const isHandleExistsInUsers = await User.exists({ handle: sanitizedHandle });
+
+    const isHandleExistsInChannels = await Channel.exists({
+      handle: sanitizedHandle,
+    });
+    const isHandleExistsInUsers = await User.exists({
+      handle: sanitizedHandle,
+    });
 
     if (isHandleExistsInChannels || isHandleExistsInUsers) {
       return {
@@ -54,8 +49,6 @@ export async function checkHandleUnique(value: string) {
     return { success: false, message: "Server database error" };
   }
 }
-
-
 
 export async function createChannel({
   name,
@@ -81,7 +74,8 @@ export async function createChannel({
 
     const channelExists = await Channel?.exists({
       name: { $regex: new RegExp(`^${name.trim()}$`, "i") },
-    });``
+    });
+    ``;
     if (channelExists) {
       return {
         success: false,
@@ -115,7 +109,7 @@ export async function createChannel({
     return {
       success: false,
       message: "Something went wrong on our end. Please try again.",
-      error: error
+      error: error,
     };
   }
 }

@@ -1,12 +1,12 @@
 import ChannelCard from "@/src/components/channel/ChannelCard";
 import Button from "@/src/components/ui/Button";
-import { Channel, IChannel } from "@/src/features/channels/channels.schema";
+import { Channel, IChannel } from "@/src/models/Channels";
 import { dbConnect } from "@/src/lib/db";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 
-export const ChannelsPage = async() => {
+export const ChannelsPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
@@ -16,7 +16,7 @@ export const ChannelsPage = async() => {
   await dbConnect();
 
   const channels: IChannel[] = await Channel.find({
-    userId: session?.user?.id
+    userId: session?.user?.id,
   }).lean();
 
   return (

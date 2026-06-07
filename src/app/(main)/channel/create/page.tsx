@@ -9,7 +9,7 @@ import {
 } from "@/src/features/channels/channels.actions";
 import useDebounce from "@/src/hooks/useDebounce";
 import { useToast } from "@/src/hooks/useToast";
-import { generateUniqueSlug } from "@/src/lib/generateSlug";
+import { generateUniqueSlug } from "@/src/server/services/slug.service";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
@@ -29,11 +29,12 @@ const page = () => {
   });
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [error, setError] = useState<Record<string, string> | null>(null);
-  const [isHandleCorrectAndUnique, setIsHandleCorrectAndUnique] = useState<Boolean>(false);
+  const [isHandleCorrectAndUnique, setIsHandleCorrectAndUnique] =
+    useState<Boolean>(false);
   const debouncedChannelValue = useDebounce(channelData.channel, 300);
   const debouncedHandleValue = useDebounce(channelData.handle, 300);
   const router = useRouter();
-  const {toast, toasts, dismiss} = useToast();
+  const { toast, toasts, dismiss } = useToast();
 
   useEffect(() => {
     if (debouncedHandleValue) isHandleUnique(debouncedHandleValue);
@@ -82,8 +83,8 @@ const page = () => {
 
   const createOwnHandle = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
-    if(!value.startsWith('@') && value?.length>0){
-      value = '@'+value;
+    if (!value.startsWith("@") && value?.length > 0) {
+      value = "@" + value;
     }
     setIsHandleCorrectAndUnique(false);
     setError(null);
@@ -119,8 +120,8 @@ const page = () => {
       handle,
       avatar: avatarPreview,
     });
-   
-    if(!res?.success){
+
+    if (!res?.success) {
       toast({
         type: "error",
         name: "Failed!",
@@ -128,7 +129,7 @@ const page = () => {
         position: "top-end",
         duration: 4000,
       });
-    }else{
+    } else {
       toast({
         type: "success",
         name: "Success",
@@ -138,12 +139,12 @@ const page = () => {
       });
     }
 
-    if(res?.success){
+    if (res?.success) {
       setChannelData({ channel: "", handle: "" });
       setIsHandleCorrectAndUnique(false);
       setAvatarPreview(null);
       setError(null);
-      setTimeout(() => router.push("/channel"), 1000); 
+      setTimeout(() => router.push("/channel"), 1000);
     }
   };
 
@@ -210,11 +211,15 @@ const page = () => {
               />
               {error?.handle ? (
                 <p className="text-sm text-red-500">{error?.handle}</p>
-              ) : (channelData?.handle && (
-                <p className={`border px-2 py-1 w-max rounded-md mt-2 ${isHandleCorrectAndUnique ? "text-emerald-700 border-emerald-700 bg-emerald-200" : "text-rose-700 bg-rose-200 border-rose-700"}`}>
-                  {channelData?.handle ? channelData?.handle : ""}
-                </p>
-              ))}
+              ) : (
+                channelData?.handle && (
+                  <p
+                    className={`border px-2 py-1 w-max rounded-md mt-2 ${isHandleCorrectAndUnique ? "text-emerald-700 border-emerald-700 bg-emerald-200" : "text-rose-700 bg-rose-200 border-rose-700"}`}
+                  >
+                    {channelData?.handle ? channelData?.handle : ""}
+                  </p>
+                )
+              )}
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 import { signInUser } from "@/src/features/users/user.actions";
-import { User } from "@/src/features/users/user.schema";
+import { User } from "@/src/models/User";
 import { dbConnect } from "@/src/lib/db";
-import { generateUniqueSlug } from "@/src/lib/generateSlug";
+import { generateUniqueSlug } from "@/src/server/services/slug.service";
 import NextAuth from "next-auth";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -56,14 +56,16 @@ export const authOptions: NextAuthOptions = {
 
           const existingUser = await User.findOne({ email: user.email });
           if (!existingUser) {
-            const uniqueSlug = await generateUniqueSlug(user?.name || undefined)
+            const uniqueSlug = await generateUniqueSlug(
+              user?.name || undefined,
+            );
             const newUser = await User.create({
               email: user.email,
               username: profile.name || user.email.split("@")[0],
               avatarUrl: profile.image || user.image || undefined,
               handle: uniqueSlug,
             });
-            
+
             user.id = newUser?._id?.toString();
           } else {
             await User.updateOne(

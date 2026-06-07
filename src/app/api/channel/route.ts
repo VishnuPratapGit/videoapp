@@ -1,4 +1,4 @@
-import { Channel } from "@/src/features/channels/channels.schema";
+import { Channel } from "@/src/models/Channels";
 import { dbConnect } from "@/src/lib/db";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
