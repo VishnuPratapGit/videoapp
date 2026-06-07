@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getChannelList } from "../actions/channels.actions";
 import type { RootState } from "../store";
+import { ChannelList } from "@/src/types/channel";
 
 const initialState: {
   loading: boolean;
-  channels: any | null;
+  channels: ChannelList | [];
   error: string | null;
 } = {
   loading: false,
-  channels: null,
+  channels: [],
   error: null,
 };
 
@@ -23,7 +24,7 @@ export const channelSlice = createSlice({
     });
     builder.addCase(getChannelList.fulfilled, (state, action) => {
       state.loading = false;
-      state.channels = action.payload;
+      state.channels = action.payload.channels;
     });
     builder.addCase(getChannelList.rejected, (state, action) => {
       state.loading = false;
