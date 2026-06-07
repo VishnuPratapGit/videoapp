@@ -1,6 +1,7 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-export interface IChannel extends Document {
+export interface IChannel {
+  _id: Types.ObjectId;
   name: string;
   banner: string;
   avatar: string;

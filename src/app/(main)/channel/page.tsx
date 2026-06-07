@@ -1,24 +1,23 @@
-"use client";
 import ChannelCard from "@/src/components/channel/ChannelCard";
-import StatsCard from "@/src/components/channel/StatsCard";
 import Button from "@/src/components/ui/Button";
-import { getChannelList } from "@/src/redux/actions/channels.actions";
-import { useAppDispatch, useAppSelector } from "@/src/redux/hooks";
-import { selectChannelState } from "@/src/redux/slices/channelSlice";
-import { useEffect, useState } from "react";
-import type { ChannelInterface, ChannelList } from "@/src/types/channel";
-import Spinner from "@/src/components/ui/Spinner";
+import { Channel, IChannel } from "@/src/features/channels/channels.schema";
+import { dbConnect } from "@/src/lib/db";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 
-const ChannelsPage = () => {
-  const { channels, loading } = useAppSelector(selectChannelState);
-  const dispatch = useAppDispatch();
+export const ChannelsPage = async() => {
+  const session = await getServerSession(authOptions);
 
-  useEffect(() => {
-    const fetchMyChannels = async () => {
-      await dispatch(getChannelList());
-    };
-    fetchMyChannels();
-  }, []);
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  await dbConnect();
+
+  const channels: IChannel[] = await Channel.find({
+    userId: session?.user?.id
+  }).lean();
 
   return (
     <div className="m-auto">
@@ -46,14 +45,12 @@ const ChannelsPage = () => {
       </div>
 
       <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {loading ? (
-          <div><Spinner/></div>
-        ) : channels.length === 0 ? (
+        {channels.length === 0 ? (
           <div>No channels yet</div>
         ) : (
           channels.map((ch) => (
             <ChannelCard
-              key={ch._id ?? ch.id}
+              key={ch._id.toString()}
               name={ch.name}
               channelAvatar={ch.avatar ?? "./vercel.svg"}
               handle={ch.handle ?? "@vercel"}
@@ -63,7 +60,7 @@ const ChannelsPage = () => {
                 { value: "210", label: "Hours live" },
               ]}
               status={"live"}
-              statusText={ch.statusText ?? "1 video live now"}
+              statusText={"1 video live now"}
             />
           ))
         )}
