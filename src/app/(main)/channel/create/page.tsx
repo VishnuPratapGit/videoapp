@@ -159,7 +159,7 @@ const page = () => {
         </Button>
       </div>
 
-      <div className="bg-(--surface-muted-fade) p-8 rounded-lg sm:w-full md:w-2xl m-auto border border-(--border-fade)">
+      <div className="bg-(--surface) p-8 rounded-lg sm:w-full md:w-2xl m-auto border border-(--border-fade)">
         <h1 className="text-xl">Create new channel</h1>
 
         <div className="flex flex-col justify-center w-full items-center gap-5 p-10 pt-8 px-20">

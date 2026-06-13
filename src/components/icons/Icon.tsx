@@ -13,6 +13,7 @@ import {
   Plus,
   TvMinimalPlay,
   X,
+  Ellipsis,
 } from "lucide-react";
 import { SVGProps } from "react";
 
@@ -29,7 +30,8 @@ const iconMap = {
   ArrowLeft,
   Plus,
   TvMinimalPlay,
-  X
+  X,
+  Ellipsis,
 } satisfies Record<string, LucideIcon>;
 
 interface IconProps extends SVGProps<SVGSVGElement> {

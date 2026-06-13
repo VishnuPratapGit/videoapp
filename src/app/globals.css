@@ -16,6 +16,7 @@
     display: none;
   }
   
+  
   .subtle-scrollbar {
     scrollbar-width: thin;
     scrollbar-color: rgba(100, 100, 100, 0.22) transparent;
@@ -82,7 +83,7 @@
 
   --surface: #0f0f0f;
   --surface-muted: #171717;
-  --surface-muted-fade: #111111;
+  --surface-muted-fade: #2e2e2e;
   --surface-hover: #262626;
   --muted: #a1a1a1;
   --muted-strong: #262626;

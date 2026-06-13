@@ -30,7 +30,7 @@ export const ChannelsPage = async () => {
         />
       </div> */}
 
-      <div className="flex justify-between items-center mb-8 text-lg">
+      <div className="flex justify-between items-center mb-5 text-lg">
         <div className="font-mono">Your Channels</div>
         <div className="flex gap-4">
           <Button
@@ -44,13 +44,14 @@ export const ChannelsPage = async () => {
         </div>
       </div>
 
-      <div className="subtle-scrollbar h-[calc(100vh-240px)] p-2 overflow-y-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="subtle-scrollbar h-[calc(100vh-240px)] overflow-y-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {channels.length === 0 ? (
           <div>No channels yet</div>
         ) : (
           channels.map((ch) => (
             <ChannelCard
               key={ch._id.toString()}
+              id={ch._id.toString()}
               name={ch.name}
               channelAvatar={ch.avatar ?? "./vercel.svg"}
               handle={ch.handle ?? "@vercel"}

@@ -1,4 +1,6 @@
+import { Icon } from "../icons/Icon";
 import Avatar from "../ui/Avatar";
+import ChannelMenu from "./ChannelMenu";
 
 type StatusType = "live" | "scheduled" | "idle";
 
@@ -8,6 +10,7 @@ interface ChannelMetric {
 }
 
 interface ChannelCardProps {
+  id: string;
   name: string;
   channelAvatar: string;
   handle: string;
@@ -29,11 +32,12 @@ const ChannelCard = ({
   status,
   statusText,
   metrics,
+  id,
 }: ChannelCardProps) => {
   const statusDot = statusConfig[status];
 
   return (
-    <div className="flex flex-col bg-(--surface-muted) rounded-xl border hover:scale-101 transition-all border-(--border-fade) hover:border-(--border) overflow-clip">
+    <div className="flex flex-col h-max bg-(--surface-muted) rounded-xl border transition-all border-(--border-fade) hover:border-(--border) overflow-clip">
       {/* UPPER */}
       <div className="h-30 bg-(--background) relative">
         <div className="absolute bottom-0 left-5 translate-y-1/2">
@@ -42,13 +46,24 @@ const ChannelCard = ({
       </div>
 
       {/* LOWER */}
-      <div className="flex flex-col mt-8 px-6 py-3 gap-2">
-        <div>
+      <div className="flex flex-col px-4 pb-4 pt-0 flex-1">
+        <div className="flex items-center p-2 pb-0 self-end gap-4">
+          <div className="border border-(--border) p-2 rounded-full px-4 cursor-pointer text-sm hover:bg-(--surface)">
+            Manage Channel
+          </div>
+          <ChannelMenu id={id}>
+            <div className="border border-(--border) p-2 rounded-full cursor-pointer hover:bg-(--surface)">
+              <Icon icon="Ellipsis" />
+            </div>
+          </ChannelMenu>
+        </div>
+
+        <div className="px-2">
           <h1 className="text-lg font-semibold">{name}</h1>
           <div className="text-(--muted) text-sm">{handle}</div>
         </div>
 
-        <div className="flex items-center gap-1.5 mb-3">
+        <div className="px-2 flex items-center gap-1.5 my-3">
           <span
             className={`w-2 h-2 rounded-full inline-block ${statusDot.dotClass}`}
           />

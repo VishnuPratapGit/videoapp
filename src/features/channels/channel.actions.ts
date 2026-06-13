@@ -7,6 +7,7 @@ import { authOptions } from "@/src/app/api/auth/[...nextauth]/route";
 import { Channel } from "@/src/models/Channels";
 import { User } from "@/src/models/User";
 import { ChannelZodSchema } from "./channel.validation";
+import { revalidatePath } from "next/cache";
 
 export async function checkHandleUnique(value: string) {
   try {
@@ -102,6 +103,32 @@ export async function createChannel({
       success: false,
       message: "Something went wrong on our end. Please try again.",
       error: error,
+    };
+  }
+}
+
+export async function deleteChannel(id: string) {
+  try {
+    if (!id) {
+      return {
+        success: false,
+        message: "Id is required to delete the channel",
+      };
+    }
+
+    const channel = await Channel.findByIdAndDelete(id);
+
+    if (!channel) {
+      return { success: false, message: "Channel not found!" };
+    }
+
+    revalidatePath('/channel')
+    return { success: true, message: "Channel successfully deleted"};
+  } catch (error: any) {
+    return {
+      success: false,
+      messages: "Internal sever error",
+      error: error.message,
     };
   }
 }
